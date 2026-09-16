@@ -1,11 +1,22 @@
 import { Sequelize, DataTypes } from "sequelize";
+import dotenv from "dotenv";
+dotenv.config();
 // database connection
 
-const sequelize = new Sequelize("product_db", "dev_user", "dev_password", {
-    host:"localhost",
-    port:5439,
-    dialect:"postgres",
-    logging:false,
+
+const dbName = process.env.PGDATABASE;
+const dbUsername = process.env.PGUSER;
+const dbPassword = process.env.PGPASSWORD;
+const dbURL = process.env.PGHOST_UNPOOLED;
+const PORT = process.env.PORT;
+const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
+  host: dbURL,
+  port: PORT,
+  dialect: "postgres",
+  logging: false,
+  dialectOptions: {
+    ssl: { require: true, rejectUnauthorized: false },
+  },
 });
 
 // define database schema
