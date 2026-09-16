@@ -3,20 +3,33 @@ import dotenv from "dotenv";
 dotenv.config();
 // database connection
 
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+    throw new Error("DATABASE_URL is required");
+}
 
-const dbName = process.env.PGDATABASE;
-const dbUsername = process.env.PGUSER;
-const dbPassword = process.env.PGPASSWORD;
-const dbURL = process.env.PGHOST_UNPOOLED;
-const PORT = process.env.PORT;
-const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
-  host: dbURL,
-  port: PORT,
-  dialect: "postgres",
-  logging: false,
-  dialectOptions: {
-    ssl: { require: true, rejectUnauthorized: false },
-  },
+// const dbName = process.env.PGDATABASE;
+// const dbUsername = process.env.PGUSER;
+// const dbPassword = process.env.PGPASSWORD;
+// const dbURL = process.env.PGHOST_UNPOOLED;
+// const PORT = process.env.PORT;
+// const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
+//   host: dbURL,
+//   port: PORT,
+//   dialect: "postgres",
+//   logging: false,
+//   dialectOptions: {
+//     ssl: { require: true, rejectUnauthorized: false },
+//   },
+// });
+
+const sequelize = new Sequelize (databaseUrl, {
+    dialect: "postgres",
+    logging: false,
+    dialectOptions: {
+        ssl: { require: true,
+            rejectUnauthorized: false },
+    },
 });
 
 // define database schema
